@@ -9,6 +9,8 @@ include_once CORE_PACKAGE_ROOT . '/tools/JsonHandler.php';
 
 use com\yp\tools\JsonHandler;
 
+//print_r($_GET);
+
 $handlerClass = "";
 if (isset($_GET["handler"])) {
     $handlerClass = $_GET["handler"];
@@ -17,10 +19,13 @@ $function = "";
 if (isset($_GET["function"])) {
     $function = $_GET["function"];
 }
+//var_dump($_GET);
+
+//error_log("handlerClass :" . $handlerClass . ":");
 // 'OPTIONS', 'GET', 'POST'
 $mothod = $_SERVER['REQUEST_METHOD'];
 if ($handlerClass != "" && ($mothod == 'POST' || $mothod == 'GET')) {
-    JsonHandler::initialize(CLASSES);
+    JsonHandler::initialize(CLASSES);   
     $handlerClass = JsonHandler::get_class($handlerClass);
     $handler = new $handlerClass();
     $params_json = file_get_contents("php://input");
