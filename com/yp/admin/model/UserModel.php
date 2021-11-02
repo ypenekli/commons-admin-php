@@ -81,7 +81,7 @@ class UserModel extends DbHandler
                     $loginhistory->setClientInfo($email->value, $remaddress->value, $now);                    
                 }               
                 $result->setSuccess(true);
-                $result->setMessage('Giriþ basarýlý');
+                $result->setMessage('Giriþ baþarýlý');
             } else {
                 $errorCount = $user->get("login_error_count") + 1;
                 $result->setSuccess(false);

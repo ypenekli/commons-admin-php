@@ -19,9 +19,6 @@ $function = "";
 if (isset($_GET["function"])) {
     $function = $_GET["function"];
 }
-//var_dump($_GET);
-
-//error_log("handlerClass :" . $handlerClass . ":");
 // 'OPTIONS', 'GET', 'POST'
 $mothod = $_SERVER['REQUEST_METHOD'];
 if ($handlerClass != "" && ($mothod == 'POST' || $mothod == 'GET')) {
@@ -32,7 +29,7 @@ if ($handlerClass != "" && ($mothod == 'POST' || $mothod == 'GET')) {
     if (isset($_GET["params"])) {
         $params_json = $_GET["params"];
     }
-    error_log("params_json!" . $params_json);
+   // error_log("params_json!" . $params_json);
 
     if ($mothod == 'POST' || $mothod == 'GET') {
         $params = array();
@@ -53,7 +50,7 @@ if ($handlerClass != "" && ($mothod == 'POST' || $mothod == 'GET')) {
             $data = $handler->$function($queryName, $params);
             if ($data != null) {
                 $jsonStr = JsonHandler::stringify($data);
-                error_log("jsonStr!" . $jsonStr);
+               // error_log("jsonStr!" . $jsonStr);
                 echo $jsonStr;
             }
         }
