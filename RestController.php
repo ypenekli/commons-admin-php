@@ -29,12 +29,12 @@ if ($handlerClass != "" && ($mothod == 'POST' || $mothod == 'GET')) {
     if (isset($_GET["params"])) {
         $params_json = $_GET["params"];
     }
-   // error_log("params_json!" . $params_json);
+    error_log("params_json!" . $params_json);
 
     if ($mothod == 'POST' || $mothod == 'GET') {
         $params = array();
 
-        if ($params_json != null) {
+        if ($params_json != null) {           
             $params = JsonHandler::parse($params_json);
         }
 
