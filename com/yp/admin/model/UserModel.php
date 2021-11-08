@@ -38,7 +38,7 @@ class UserModel extends DbHandler
                 $queryName1 = 'Q_USERS6';
             }
         }      
-        return $this->findBy($queryName1, $findParams);
+        return $this->findPageBy($queryName1, $findParams);
     }
     
     public function findUsersByEmail(string $queryName, array $params)

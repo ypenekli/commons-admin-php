@@ -24,7 +24,7 @@ class CommonModel extends DbHandler
     public function findByParent(string $queryName, array $params)
     {
         $queryName1 = 'Q_COMMONS_PARENT_ID1';
-        return $this->findBy($queryName1, $params);
+        return $this->findPageBy($queryName1, $params);
     }
     
     public function saveCommon(string $pFnName, Array $params)
