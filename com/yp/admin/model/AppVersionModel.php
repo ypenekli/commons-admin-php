@@ -9,10 +9,7 @@ use com\yp\db\DbHandler;
 use com\yp\tools\Configuration;
 use com\yp\tools\ClientIP;
 use com\yp\db\Result;
-use com\yp\admin\data\AppFunc;
-use com\yp\admin\data\GroupAppFunc;
-use com\yp\core\FnParam;
-use com\yp\admin\data\GroupAppFuncsHistory;
+use com\yp\admin\data\AppVersion;
 
 class AppVersionModel extends DbHandler
 {
@@ -38,60 +35,45 @@ class AppVersionModel extends DbHandler
 
     public function saveVersion(string $pFnName, Array $params)
     {
-        $appFunc = $params[0]->value;
-        $groupId = $params[1]->value;
-        $user = $params[2]->value;
+        $appVersion = $params[0]->value;
+        $user = $params[1]->value;
         $remaddress = ClientIP::get_ip_address();
 
-        $result = $this->validateFields($appFunc);
-        if ($result->isSuccess()) {
-
-            $parent = null;
-            $groupFunc = null;
-            $history = null;
-            $appFunc->setLastClientInfo($user->getEmail(), $remaddress);
-            if ($appFunc->isNew()) {
-
-                $groupFunc = new GroupAppFunc($groupId, $appFunc->getId());
-                $groupFunc->setLastClient($appFunc);
-
-                $history = new GroupAppFuncsHistory($groupFunc, - 1);
-                $history->setUpdateUser($user, GroupAppFuncsHistory::$UPDATE_MODE_ADD);
-                if (! $appFunc->isRoot()) {
-                    $appModel = new AppModel();
-                    $parent = $appModel->find('find', new AppFunc($appFunc->getParentId()));                    
-                    //$parent = new AppFunc($appFunc->getParentId());
-                    //$parent->accept();
-                   // $parent->setName($appFunc->getParentName());
-                    $parent->setLeaf(false);
-                    $parent->setLastClient($appFunc);
-                }
-            }
-
-            $saveParams = array(
-                new FnParam("data", $appFunc),
-                new FnParam("data", $groupFunc),
-                new FnParam("data", $history),
-                new FnParam("data", $parent)
-            );
-            $result = $this->saveAtomic('saveAtomic', $saveParams);
+        $result = $this->validateFields($appVersion);
+        if ($result->isSuccess()) {        
+            $appVersion->setLastClientInfo($user->getEmail(), $remaddress);
+            $result = $this->save('save', $appVersion);
         }
         return $result;
     }
 
-    private function validateFields(AppFunc $pFunc): Result
+    private function validateFields(AppVersion $pVersion): Result
     {
         $res = new Result(true);
-        $id = $pFunc->getId();
+        $id = $pVersion->getAppId();
         if ($id == null || strlen($id) < 3) {
             $res->setSuccess(false);
-            $res->setMessage("id hata");
+            $res->setMessage("app id hata");
         }
-        $name = $pFunc->getName();
-        if ($name == null || strlen($name) < 3) {
+        
+        $version = $pVersion->getVersion();
+        if($version == null || $version < 100 || $version > 999){
             $res->setSuccess(false);
-            $res->setMessage("name hata");
+            $res->setMessage("version hata");            
         }
+        
+        $desc = $pVersion->getDescription();
+        if ($desc == null || strlen($desc) < 3) {
+            $res->setSuccess(false);
+            $res->setMessage("description hata");
+        }
+        
+        $pdate = $pVersion->getPublishDate();
+        if($pdate == null || $pdate < 19000101 || $pdate > 99999999){
+            $res->setSuccess(false);
+            $res->setMessage("publish date hata");
+        }
+        
         return $res;
     }
 }
