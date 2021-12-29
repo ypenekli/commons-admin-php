@@ -9,6 +9,7 @@ include_once ADMIN_PACKAGE_ROOT . '/admin/data/App.php';
 
 include_once ADMIN_PACKAGE_ROOT . '/admin/model/AppFuncModel.php';
 include_once ADMIN_PACKAGE_ROOT . '/admin/data/AppFunc.php';
+include_once ADMIN_PACKAGE_ROOT . '/admin/model/AppVersionModel.php';
 include_once ADMIN_PACKAGE_ROOT . '/admin/data/AppVersion.php';
 
 include_once ADMIN_PACKAGE_ROOT . '/admin/model/CommonModel.php';
@@ -51,6 +52,7 @@ use com\yp\admin\data\GroupAppFuncsHistory;
 use com\yp\admin\data\GroupUser;
 use com\yp\entity\DataEntity;
 use com\yp\admin\data\GroupUsersHistory;
+use com\yp\admin\model\AppVersionModel;
 
 $CLASSES =
 [
@@ -62,6 +64,7 @@ $CLASSES =
     'AppFunc' => AppFunc::class,
     'AppFuncModel' => AppFuncModel::class,
     'AppVersion' => AppVersion::class,
+    'AppVersionModel'=>AppVersionModel::class,
     
     'Common' => Common::class,
     'CommonModel' => CommonModel::class,
